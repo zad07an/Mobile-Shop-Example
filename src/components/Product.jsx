@@ -1,6 +1,11 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, removeFromCart } from "../redux/features/cart-slice";
+import {
+  addToCart,
+  decrementItemQuantity,
+  incrementItemQuantity,
+  removeFromCart,
+} from "../redux/features/cart-slice";
 import { useNavigate } from "react-router-dom";
 
 export default function Product({ item }) {
@@ -8,18 +13,14 @@ export default function Product({ item }) {
   const { cartItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
-  const handleAddToCart = () => {
-    const itemExist = cartItems?.find(
-      (existItem) => existItem?.id === item?.id
-    );
-    if (itemExist) {
-      dispatch(removeFromCart(item?.id));
-      return;
-    } else {
-      dispatch(addToCart(item));
-    }
-  };
+  const isProductInCart = cartItems?.find(
+    (inCartItem) => inCartItem?.id === item?.id
+  );
 
+  const handleAddToCart = () => dispatch(addToCart(item));
+  const handleRemoveFromCart = () => dispatch(removeFromCart(item?.id));
+  const handleIncrementCartItem = () => dispatch(incrementItemQuantity(item));
+  const handleDecrementCartItem = () => dispatch(decrementItemQuantity(item));
   const handleSeeProduct = () => navigate("/product/" + item?.id);
 
   return (
@@ -36,12 +37,38 @@ export default function Product({ item }) {
         <p>{item?.price?.toLocaleString()} AMD</p>
       </div>
       <div>
-        <button
-          className=" py-1 px-10 text-white bg-purple-600 rounded-sm"
-          onClick={handleAddToCart}
-        >
-          Add to cart
-        </button>
+        {isProductInCart ? (
+          <div className=" flex items-center gap-4">
+            <div className=" flex items-center gap-2">
+              <button
+                className=" w-6 h-6 bg-purple-600 text-white rounded-sm flex items-center justify-center"
+                onClick={handleDecrementCartItem}
+              >
+                -
+              </button>
+              <button>{isProductInCart?.quantity}</button>
+              <button
+                className=" w-6 h-6 bg-purple-600 text-white rounded-sm flex items-center justify-center"
+                onClick={handleIncrementCartItem}
+              >
+                +
+              </button>
+            </div>
+            <button
+              className=" py-1 px-4 bg-red-500 text-white rounded-sm"
+              onClick={handleRemoveFromCart}
+            >
+              Remove
+            </button>
+          </div>
+        ) : (
+          <button
+            className=" py-1 px-10 text-white bg-purple-600 rounded-sm"
+            onClick={handleAddToCart}
+          >
+            Add to cart
+          </button>
+        )}
       </div>
     </div>
   );
