@@ -19,16 +19,29 @@ export default function SingleProduct() {
       </div>
       <div className=" flex flex-col items-start gap-4">
         <div>
-          <p className=" text-2xl">{productItem?.title}</p>
+          <p className=" text-3xl">{productItem?.title}</p>
         </div>
         <div>
-          <p className=" font-medium">
+          <p className="text-gray-600">{productItem?.description}</p>
+        </div>
+        <div>
+          <p className=" text-xl">
             Price: {productItem?.price?.toLocaleString()}{" "}
-            <span className=" text-purple-700">AMD</span>
+            <span className=" text-orange-500 font-medium">AMD</span>
           </p>
         </div>
         <div>
-          <p>{productItem?.description}</p>
+          <p className=" text-xl flex items-center gap-2">
+            Color:
+            <div
+              className=" w-5 h-5 rounded-sm border border-gray-300"
+              style={{ background: productItem?.color }}
+            ></div>
+            <p>{productItem?.color_name}</p>
+          </p>
+        </div>
+        <div>
+          <p className=" text-xl">Storage: {productItem?.storage}</p>
         </div>
       </div>
     </div>

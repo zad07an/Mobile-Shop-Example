@@ -7,8 +7,4 @@ export const navbarDb = [
     pathname: "Shop",
     path: "/shop"
   },
-  {
-    pathname: "Cart",
-    path: "/cart"
-  },
 ]
